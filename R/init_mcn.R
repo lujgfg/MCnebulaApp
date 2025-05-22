@@ -9,8 +9,8 @@
 init_mcn_ui <- function(id) {
   ns <- NS(id)
   nav_panel(
-    title = 'Initialize mcnebula', 
-    icon = bsicons::bs_icon("play-circle"), 
+    title = "Initialize MCnebula", 
+    icon = bsicons::bs_icon("play-circle"),
     layout_sidebar(
       sidebar = accordion(
         accordion_panel(
@@ -23,8 +23,15 @@ init_mcn_ui <- function(id) {
             buttonType = "default", class = NULL,
             icon = bsicons::bs_icon("folder"), multiple = FALSE
           ),
-          tags$span(textOutput(outputId = ns("raw_wd_path")), class = "text-wrap")
-        )
+          tags$span(textOutput(outputId = ns("raw_wd_path")), class = "text-wrap"),
+          radioButtons(
+            inputId = ns("init_mcn_mode"), 
+            label = "Positive or Negative", 
+            choices = c("Pos", "Neg"),
+            selected = "Pos"
+          ),
+          actionButton(inputId = ns("init_mcn_start"),label = "Initialize MCnebula",icon = icon("play"))
+        ),
       )
     )
   )
