@@ -2,9 +2,17 @@
 % Please edit documentation in R/init_mcn.R
 \name{init_mcn_ui}
 \alias{init_mcn_ui}
+\alias{init_mcn_server}
 \title{mcnebula project init ui}
 \usage{
 init_mcn_ui(id)
+
+init_mcn_server(id, volumes, mcn_objects)
+}
+\arguments{
+\item{id}{module of server}
+
+\item{volumes}{shinyFile volumes}
 }
 \description{
 mcnebula project init ui
