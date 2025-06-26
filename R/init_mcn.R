@@ -90,8 +90,8 @@ init_mcn_server <- function(id, volumes, mcn_objects) {
       )
       if(!is.null(input$prj_wd)){
         # browser()
-        sirius_data_selected <- parseDirPath(roots = volumes, input$prj_wd)
-        output$raw_wd_path <- renderText(sirius_data_selected)
+        set_wd_path <- parseDirPath(roots = volumes, input$prj_wd)
+        output$raw_wd_path <- renderText(set_wd_path)
       }
     })
     
@@ -103,6 +103,8 @@ init_mcn_server <- function(id, volumes, mcn_objects) {
     
     observeEvent(input$init_mcn_start, {
       req(mcn_objects)
+      req(init_mcn_mode)
+      req(prj_wd)
       
       sirius_path <- parseDirPath(roots = volumes, input$sirius_path)
       print(as.character(sirius_path))
@@ -113,6 +115,7 @@ init_mcn_server <- function(id, volumes, mcn_objects) {
         mcn, as.character(input$sirius_version), as.character(sirius_path)
       )
       ion_mode(mcn) <- as.character(input$init_mcn_mode)
+      export_path(mcn) <- as.character(input$prj_wd)
       mcn_objects$mcn <- mcn
       shinyalert::shinyalert(
         title = "Success",

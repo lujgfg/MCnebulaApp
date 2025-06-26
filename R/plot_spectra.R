@@ -57,6 +57,37 @@ plot_spectra_ui <- function(id) {
 plot_spectra_server <- function(id, volumes, mcn_objects){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
+    
+    observeEvent(input$plot_spectra, {
+      req(mcn_objects$mcn)
+      
+      mcn <- mcn_objects$mcn
+      tops <- select_features(
+        mcn, logfc = .3, 
+        q.value = .05, 
+        tani.score_cutoff = .5,
+        order_by_coef = 1, coef = 1, togather = T
+      )
+      top20 <- tops[1:20]
+      mcn <- mcn_objects$mcn
+      mcn <- draw_structures(mcn, .features_id = top20)
+      
+      output$msms_plot <- renderPlot({
+        plot_msms_mirrors(mcn, top20)
+      })
+      
+      shinyalert::shinyalert(
+        title = "Success",
+        text = "msms plot accomplished",
+        type = "success"
+      )
+    })
+    
+    #observeEvent(input$eic_plot, {
+    #  req(mcn_objects$mcn)
+    #  
+    #  
+    #})
  
   })
 }

@@ -22,7 +22,7 @@ app_server <- function(input, output, session) {
       volumes = shinyFiles::getVolumes()()
     }
   
-    mcn_objects <- reactiveValues(mcn = NULL, mcn2 = NULL, top.list = NULL)
+    mcn_objects <- reactiveValues(mcn = NULL, mcn2 = NULL, top.list = NULL, feas.table = NULL)
     init_mcn_server(id = "init_mcn", volumes = volumes, mcn_objects)
     
     filter_candidates_server(

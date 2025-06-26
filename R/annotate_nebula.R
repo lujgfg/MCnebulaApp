@@ -43,7 +43,6 @@ annotate_nebula_ui <- function(id) {
         nav_panel(
           title = "Annotate Nebula",
           icon = bsicons::bs_icon("inbox"), 
-          tags$h3("Annotate Nebula", style = "color: black"),
           navset_card_tab(
             height = 700,
             full_screen = TRUE,
@@ -52,6 +51,11 @@ annotate_nebula_ui <- function(id) {
               title = "Annotate Nebula",
               card_title("Annotate Nebula"),
               DT::dataTableOutput(ns("annotate_nebula"))
+            ),
+            nav_panel(
+              title = "Annotate Node",
+              card_title("Annotate Node"),
+              DT::dataTableOutput(ns("annotate_node"))
             )
           )
         )
@@ -97,20 +101,28 @@ annotate_nebula_server <- function(id, volumes, mcn_objects){
         sapply(kv, function(x) x[1])
       )
       palette_stat(melody(mcn2)) <- palette_vec
-      focus_classes <- as.character(input$feature_id)
+      focus_classes <- as.character(input$focus_classes)
       for (i in focus_classes) {
         mcn2 <- annotate_nebula(mcn2, i)
       }
+      
+      mcn_objects$mcn2 <- mcn2
     })
     
-    observeEvent(input$draw_annotate_node, {
+    output$annotate_nebula <- renderPlot({
       req(mcn_objects$mcn2)
-      
+      visualize_all(
+        mcn_objects$mcn2, as.character(input$focus_class[[1]]), annotate = T
+      )
+    })
+    
+    output$annotate_node <- renderPlot({
+      req(mcn_objects$mcn2)
       ef <- as.character(input$feature_id)
       mcn2 <- mcn_objects$mcn2
-      
       show_node(mcn2, ef)
     })
+    
   })
 }
     
